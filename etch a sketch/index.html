@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Randomized Color Grid</title>
+    <style>
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(16, 1fr);
+            width: 800px;
+            height: 800px;
+            margin: 0 auto;
+            border: 1px solid #ddd;
+            padding: 10px;
+        }
+        
+        .grid-item {
+            background-color: #ccc;
+            border: 1px solid #eee;
+            box-sizing: border-box;
+            transition: background-color 0.3s;
+        }
+    </style>
+</head>
+<body>
+    <div class="button-container">
+        <button onclick="promptForGridSize()">Create New Grid</button>
+    </div>
+
+    <div class="grid-container" id="gridContainer">
+        <!-- Grid items will be appended here by JavaScript -->
+    </div>
+
+    <script>
+        const gridContainer = document.getElementById('gridContainer');
+        let squaresPerSide = 16; // Default number of squares per side
+
+        // Function to prompt user for grid size and create new grid
+        function promptForGridSize() {
+            squaresPerSide = prompt('Enter the number of squares per side for the new grid (max 100):');
+            
+            // Validate the input to ensure it's within the range
+            squaresPerSide = parseInt(squaresPerSide);
+            if (isNaN(squaresPerSide) || squaresPerSide < 1 || squaresPerSide > 100) {
+                alert('Please enter a number between 1 and 100.');
+                return;
+            }
+            
+            // Clear the current grid
+            gridContainer.innerHTML = '';
+
+            // Set grid template columns to create a square grid
+            gridContainer.style.gridTemplateColumns = `repeat(${squaresPerSide}, 1fr)`;
+
+            // Create the new grid with squaresPerSide * squaresPerSide squares
+            for (let i = 0; i < squaresPerSide * squaresPerSide; i++) {
+                const gridItem = document.createElement('div');
+                gridItem.classList.add('grid-item');
+                gridContainer.appendChild(gridItem);
+
+                // Add event listeners for hover effect
+                gridItem.addEventListener('mouseover', () => {
+                    // Generate random RGB values
+                    const red = Math.floor(Math.random() * 256);
+                    const green = Math.floor(Math.random() * 256);
+                    const blue = Math.floor(Math.random() * 256);
+                    // Apply random color
+                    gridItem.style.backgroundColor = `rgb(${red}, ${green}, ${blue})`;
+                });
+
+                // Optionally remove the color when the mouse leaves
+                // gridItem.addEventListener('mouseout', () => {
+                //     gridItem.style.backgroundColor = ''; // Resets to default
+                // });
+            }
+        }
+    </script>
+</body>
+</html>
